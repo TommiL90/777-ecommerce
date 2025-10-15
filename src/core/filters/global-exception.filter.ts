@@ -60,11 +60,22 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       message = "Internal server error"
     }
 
-    // Log del error para debugging
-    this.logger.error(
-      `HTTP ${status} Error: ${JSON.stringify(message)} - ${request.method} ${request.url}`,
-      exception instanceof Error ? exception.stack : undefined
-    )
+    // Log del error basado en el código de estado
+    const logMessage = `HTTP ${status} - ${request.method} ${request.url} - ${typeof message === "string" ? message : JSON.stringify(message)}`
+
+    if (status >= 500) {
+      // Errores del servidor (5xx) - log completo con stack trace
+      this.logger.error(
+        logMessage,
+        exception instanceof Error ? exception.stack : undefined
+      )
+    } else if (status >= 400) {
+      // Errores del cliente (4xx) - log simple sin stack trace
+      this.logger.warn(logMessage)
+    } else {
+      // Otros casos (no debería ocurrir normalmente)
+      this.logger.log(logMessage)
+    }
 
     response.status(status).json({
       statusCode: status,

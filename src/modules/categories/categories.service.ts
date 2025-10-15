@@ -40,7 +40,6 @@ export class CategoriesService {
   }
 
   async findOne(id: string) {
-    console.log("findOne", id)  
     const category = await this.categoriesRepository.findOne(id)
 
     if (!category) {
