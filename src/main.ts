@@ -14,9 +14,11 @@ async function bootstrap() {
     .setTitle("777 E-commerce API")
     .setDescription("API para sistema de e-commerce")
     .setVersion("1.0")
+    .addTag("products", "Gestión de productos del catálogo")
     .build()
 
   const document = SwaggerModule.createDocument(app, config)
+  // cleanupOpenApiDoc procesa el documento para compatibilidad con Zod
   SwaggerModule.setup("api", app, cleanupOpenApiDoc(document))
 
   await app.listen(process.env.PORT ?? 3000)
