@@ -1,11 +1,15 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common"
+import { CategoriesService } from "../categories/categories.service"
 import type { CreateProductDto } from "./dto/create-product.dto"
 import type { UpdateProductDto } from "./dto/update-product.dto"
 import { ProductsRepository } from "./repositories/products.repository"
 
 @Injectable()
 export class ProductsService {
-  constructor(private productsRepository: ProductsRepository) {}
+  constructor(
+    private productsRepository: ProductsRepository,
+    private categoriesService: CategoriesService
+  ) {}
 
   async create(createProductDto: CreateProductDto) {
     const findProduct = await this.productsRepository.findOne(createProductDto.sku)
@@ -13,6 +17,9 @@ export class ProductsService {
     if (findProduct) {
       throw new ConflictException("Product already exists")
     }
+
+    // Validar que la categoría exista
+    await this.categoriesService.findOne(createProductDto.categoryId)
 
     return this.productsRepository.create(createProductDto)
   }
