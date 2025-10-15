@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-test
+    command: >-
+      --default-authentication-plugin=mysql_native_password
+      --innodb_buffer_pool_size=64M
+      --key_buffer_size=8M
+      --max_connections=50
+      --log_bin_trust_function_creators=1
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=app_test
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=app
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    # Almacenamiento efímero para que sea lo más ligero posible
+    tmpfs:
+      - /var/lib/mysql:rw
+    # Scripts SQL opcionales en ./docker/mysql-init/*.sql
+    volumes:
+      - ./docker/mysql-init:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+
+
