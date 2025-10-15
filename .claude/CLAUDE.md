@@ -40,6 +40,14 @@ npx ultracite check         # Check for code issues
 npx ultracite fix           # Auto-fix code issues
 ```
 
+### Database Management
+```bash
+pnpm run prisma:generate    # Generate Prisma Client
+pnpm run prisma:migrate     # Run database migrations
+pnpm run prisma:studio      # Open Prisma Studio
+pnpm run prisma:seed        # Seed database with initial data
+```
+
 ### Docker Services
 ```bash
 docker compose up -d        # Start MySQL database
@@ -72,7 +80,7 @@ The application follows NestJS modular architecture patterns:
 
 - **Services**:
   - Business logic and persistence layer
-  - Entities with MikroORM for data persistence
+  - Entities with Prisma for data persistence
   - One service per entity
 
 - **Core Module** (planned): For NestJS artifacts
@@ -180,7 +188,7 @@ This is a fresh NestJS project with:
 - Basic app module, controller, and service
 - Jest testing configured
 - Docker Compose setup for MySQL database
-- No database ORM configured yet (MikroORM is planned per architecture)
+- Prisma ORM configured for MySQL database
 - No additional modules beyond the root AppModule
 
 The project is in its initial state and ready for e-commerce feature development following the modular architecture patterns described above.
