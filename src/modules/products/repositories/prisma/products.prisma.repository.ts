@@ -3,7 +3,7 @@ import { z } from "zod";
 import { PrismaService } from "src/database/prisma.service";
 import type { CreateProductDto } from "../../dto/create-product.dto";
 import type { UpdateProductDto } from "../../dto/update-product.dto";
-import { ProductSchema, type Product } from "../../entities/product.schema";
+import { ProductSchema, type Product } from "../../schemas/product.schema";
 import type { ProductsRepository } from "../products.repository";
 
 @Injectable()
