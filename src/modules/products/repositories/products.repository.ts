@@ -1,7 +1,9 @@
+import { Injectable } from "@nestjs/common";
 import type { CreateProductDto } from "../dto/create-product.dto";
 import type { UpdateProductDto } from "../dto/update-product.dto";
 import type { Product } from "../entities/product.entity";
 
+@Injectable()
 export abstract class ProductsRepository {
   abstract create(createProductDto: CreateProductDto): Promise<Product>;
   abstract findAll(): Promise<Product[]>;

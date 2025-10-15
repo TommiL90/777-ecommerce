@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common"
 import type { CreateProductDto } from "./dto/create-product.dto"
 import type { UpdateProductDto } from "./dto/update-product.dto"
-import type { ProductsRepository } from "./repositories/products.repository"
+import { ProductsRepository } from "./repositories/products.repository"
 
 @Injectable()
 export class ProductsService {

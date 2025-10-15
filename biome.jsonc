@@ -37,7 +37,8 @@
         "noMagicNumbers": "off",
         "noParameterProperties": "off",
         "useConst": "off",
-        "useReadonlyClassProperties": "off"
+        "useReadonlyClassProperties": "off",
+        "useImportType": "off"
       },
       "correctness": {
         "noUnusedVariables": "warn",

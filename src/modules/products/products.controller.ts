@@ -10,7 +10,7 @@ import {
 import { ApiTags } from "@nestjs/swagger";
 import type { CreateProductDto } from "./dto/create-product.dto";
 import type { UpdateProductDto } from "./dto/update-product.dto";
-import type { ProductsService } from "./products.service";
+import { ProductsService } from "./products.service";
 
 @ApiTags("Products")
 @Controller("products")
