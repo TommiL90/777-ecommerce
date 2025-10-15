@@ -92,9 +92,9 @@ async function main(): Promise<void> {
 
 main()
   .catch((e) => {
-    console.error("❌ Error durante el seed:", e);
-    process.exit(1);
+    console.error("❌ Error durante el seed:", e)
+    process.exit(1)
   })
   .finally(async () => {
-    await prisma.$disconnect();
-  });
+    await prisma.$disconnect()
+  })
