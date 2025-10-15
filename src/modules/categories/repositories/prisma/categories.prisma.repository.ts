@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable } from "@nestjs/common"
 import { PrismaService } from "src/database/prisma.service"
-import { z } from "zod"
+import { ZodError, z } from "zod"
 import type { CreateCategoryDto } from "../../dto/create-category.dto"
 import type { UpdateCategoryDto } from "../../dto/update-category.dto"
 import { type Category, CategorySchema } from "../../schemas/category.schema"
@@ -15,7 +15,14 @@ export class CategoriesPrismaRepository implements CategoriesRepository {
       data,
     })
 
-    return CategorySchema.parse(newCategory)
+    try {
+      return CategorySchema.parse(newCategory)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid category data format")
+      }
+      throw error
+    }
   }
 
   async findAll(): Promise<Category[]> {
@@ -33,7 +40,14 @@ export class CategoriesPrismaRepository implements CategoriesRepository {
       orderBy: [{ parentId: "asc" }, { name: "asc" }],
     })
 
-    return z.array(CategorySchema).parse(categories)
+    try {
+      return z.array(CategorySchema).parse(categories)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid category data format in database")
+      }
+      throw error
+    }
   }
 
   async findOne(id: string): Promise<Category | null> {
@@ -55,7 +69,14 @@ export class CategoriesPrismaRepository implements CategoriesRepository {
       return null
     }
 
-    return CategorySchema.parse(category)
+    try {
+      return CategorySchema.parse(category)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid category data format")
+      }
+      throw error
+    }
   }
 
   async findBySlug(slug: string): Promise<Category | null> {
@@ -77,7 +98,14 @@ export class CategoriesPrismaRepository implements CategoriesRepository {
       return null
     }
 
-    return CategorySchema.parse(category)
+    try {
+      return CategorySchema.parse(category)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid category data format")
+      }
+      throw error
+    }
   }
 
   async findChildren(parentId: string): Promise<Category[]> {
@@ -94,7 +122,14 @@ export class CategoriesPrismaRepository implements CategoriesRepository {
       orderBy: { name: "asc" },
     })
 
-    return z.array(CategorySchema).parse(children)
+    try {
+      return z.array(CategorySchema).parse(children)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid category data format in database")
+      }
+      throw error
+    }
   }
 
   async update(id: string, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
@@ -113,7 +148,14 @@ export class CategoriesPrismaRepository implements CategoriesRepository {
       },
     })
 
-    return CategorySchema.parse(updatedCategory)
+    try {
+      return CategorySchema.parse(updatedCategory)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid category data format")
+      }
+      throw error
+    }
   }
 
   async remove(id: string): Promise<void> {

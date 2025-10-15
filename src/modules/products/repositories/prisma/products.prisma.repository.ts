@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable } from "@nestjs/common"
 import { PrismaService } from "src/database/prisma.service"
-import { z } from "zod"
+import { ZodError, z } from "zod"
 import type { CreateProductDto } from "../../dto/create-product.dto"
 import type { UpdateProductDto } from "../../dto/update-product.dto"
 import { type Product, ProductSchema } from "../../schemas/product.schema"
@@ -15,7 +15,14 @@ export class ProductsPrismaRepository implements ProductsRepository {
       data,
     })
 
-    return ProductSchema.parse(newProduct)
+    try {
+      return ProductSchema.parse(newProduct)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid product data format")
+      }
+      throw error
+    }
   }
 
   async findAll(): Promise<Product[]> {
@@ -23,15 +30,33 @@ export class ProductsPrismaRepository implements ProductsRepository {
       include: { category: true },
     })
 
-    return z.array(ProductSchema).parse(products)
+    try {
+      return z.array(ProductSchema).parse(products)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid product data format in database")
+      }
+      throw error
+    }
   }
 
-  async findOne(sku: string): Promise<Product> {
+  async findOne(sku: string): Promise<Product | null> {
     const retrieveProduct = await this.prisma.product.findUnique({
       where: { sku },
     })
 
-    return ProductSchema.parse(retrieveProduct)
+    if (!retrieveProduct) {
+      return null
+    }
+
+    try {
+      return ProductSchema.parse(retrieveProduct)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid product data format")
+      }
+      throw error
+    }
   }
 
   async update(sku: string, updateProductDto: UpdateProductDto): Promise<Product> {
@@ -40,7 +65,14 @@ export class ProductsPrismaRepository implements ProductsRepository {
       data: { ...updateProductDto },
     })
 
-    return ProductSchema.parse(updateProduct)
+    try {
+      return ProductSchema.parse(updateProduct)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        throw new BadRequestException("Invalid product data format")
+      }
+      throw error
+    }
   }
 
   async remove(sku: string): Promise<void> {

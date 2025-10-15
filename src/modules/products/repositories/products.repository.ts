@@ -7,7 +7,7 @@ import type { Product } from "../schemas/product.schema"
 export abstract class ProductsRepository {
   abstract create(createProductDto: CreateProductDto): Promise<Product>
   abstract findAll(): Promise<Product[]>
-  abstract findOne(sku: string): Promise<Product>
+  abstract findOne(sku: string): Promise<Product | null>
   abstract update(sku: string, updateProductDto: UpdateProductDto): Promise<Product>
 
   abstract remove(sku: string): Promise<void>

@@ -1,92 +1,93 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client"
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 async function main(): Promise<void> {
-  console.log("🌱 Iniciando seed de categorías...");
+  console.log("🌱 Iniciando seed de categorías...")
 
-  // Crear categorías principales
+  // Crear categorías principales con UUIDs
+  console.log("📁 Creando categorías principales...")
   const restoBar = await prisma.category.create({
     data: {
-      id: "resto-bar",
       name: "Resto-Bar",
       slug: "resto-bar",
     },
-  });
+  })
 
   const sexShop = await prisma.category.create({
     data: {
-      id: "sex-shop",
       name: "Sex-Shop",
       slug: "sex-shop",
     },
-  });
+  })
 
-  console.log("✅ Categorías principales creadas");
+  console.log("✅ Categorías principales creadas")
 
   // Subcategorías de Resto-Bar
+  console.log("📂 Creando subcategorías de Resto-Bar...")
   const restoBarSubcategories = [
-    "promocion",
-    "desayuno",
-    "sandwich",
-    "pizzas",
-    "postres",
-    "snack",
-    "para-compartir",
-    "bebestibles",
-    "cervezas",
-    "vinos",
-    "espumantes",
-    "destilados",
-    "aperitivos",
-    "coctels",
-  ];
+    { slug: "promocion", name: "Promoción" },
+    { slug: "desayuno", name: "Desayuno" },
+    { slug: "sandwich", name: "Sandwich" },
+    { slug: "pizzas", name: "Pizzas" },
+    { slug: "postres", name: "Postres" },
+    { slug: "snack", name: "Snack" },
+    { slug: "para-compartir", name: "Para Compartir" },
+    { slug: "bebestibles", name: "Bebestibles" },
+    { slug: "cervezas", name: "Cervezas" },
+    { slug: "vinos", name: "Vinos" },
+    { slug: "espumantes", name: "Espumantes" },
+    { slug: "destilados", name: "Destilados" },
+    { slug: "aperitivos", name: "Aperitivos" },
+    { slug: "coctels", name: "Coctels" },
+  ]
 
+  const restoBarCategories: Array<{ id: string; slug: string }> = []
   for (const subcategory of restoBarSubcategories) {
-    await prisma.category.create({
+    const category = await prisma.category.create({
       data: {
-        id: `resto-bar-${subcategory}`,
-        name:
-          subcategory.charAt(0).toUpperCase() +
-          subcategory.slice(1).replace("-", " "),
-        slug: subcategory,
+        name: subcategory.name,
+        slug: subcategory.slug,
         parentId: restoBar.id,
       },
-    });
+    })
+    restoBarCategories.push(category)
   }
 
-  console.log("✅ Subcategorías de Resto-Bar creadas");
+  console.log(`✅ ${restoBarSubcategories.length} subcategorías de Resto-Bar creadas`)
 
   // Subcategorías de Sex-Shop
+  console.log("📂 Creando subcategorías de Sex-Shop...")
   const sexShopSubcategories = [
-    "accesorios",
-    "anillos",
-    "vibradores",
-    "dildos",
-    "preservativos",
-    "gel-lubricantes",
-    "juguetes",
-    "lenceria-femenina",
-    "lenceria-masculina",
-    "otros",
-  ];
+    { slug: "accesorios", name: "Accesorios" },
+    { slug: "anillos", name: "Anillos" },
+    { slug: "vibradores", name: "Vibradores" },
+    { slug: "dildos", name: "Dildos" },
+    { slug: "preservativos", name: "Preservativos" },
+    { slug: "gel-lubricantes", name: "Gel Lubricantes" },
+    { slug: "juguetes", name: "Juguetes" },
+    { slug: "lenceria-femenina", name: "Lencería Femenina" },
+    { slug: "lenceria-masculina", name: "Lencería Masculina" },
+    { slug: "otros", name: "Otros" },
+  ]
 
+  const sexShopCategories: Array<{ id: string; slug: string }> = []
   for (const subcategory of sexShopSubcategories) {
-    await prisma.category.create({
+    const category = await prisma.category.create({
       data: {
-        id: `sex-shop-${subcategory}`,
-        name:
-          subcategory.charAt(0).toUpperCase() +
-          subcategory.slice(1).replace("-", " "),
-        slug: subcategory,
+        name: subcategory.name,
+        slug: subcategory.slug,
         parentId: sexShop.id,
       },
-    });
+    })
+    sexShopCategories.push(category)
   }
 
-  console.log("✅ Subcategorías de Sex-Shop creadas");
+  console.log(`✅ ${sexShopSubcategories.length} subcategorías de Sex-Shop creadas`)
 
-  console.log("🎉 Seed completado exitosamente");
+  const totalCategories = await prisma.category.count()
+  console.log(`\n📊 Total de categorías creadas: ${totalCategories}`)
+  console.log("🎉 Seed completado exitosamente")
 }
 
 main()

@@ -2,9 +2,13 @@ import { NestFactory } from "@nestjs/core"
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
 import { cleanupOpenApiDoc, ZodValidationPipe } from "nestjs-zod"
 import { AppModule } from "./app.module"
+import { GlobalExceptionFilter } from "./core/filters/global-exception.filter"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+
+  // Configurar filtro global de excepciones
+  app.useGlobalFilters(new GlobalExceptionFilter())
 
   // Configurar validación global con Zod
   app.useGlobalPipes(new ZodValidationPipe())
