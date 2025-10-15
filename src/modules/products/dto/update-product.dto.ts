@@ -1,6 +1,6 @@
-import { createZodDto } from "nestjs-zod";
-import type { z } from "zod";
-import { UpdateProductSchema } from "../schemas/product.schema";
+import { createZodDto } from "nestjs-zod"
+import type { z } from "zod"
+import { UpdateProductSchema } from "../schemas/product.schema"
 
 /**
  * DTO para actualizar un producto
@@ -11,4 +11,4 @@ export class UpdateProductDto extends createZodDto(UpdateProductSchema) {}
 /**
  * Tipo inferido del schema para uso interno
  */
-export type UpdateProductInput = z.infer<typeof UpdateProductSchema>;
+export type UpdateProductInput = z.infer<typeof UpdateProductSchema>

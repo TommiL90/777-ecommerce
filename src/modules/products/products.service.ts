@@ -36,11 +36,17 @@ export class ProductsService {
     return product
   }
 
-  update(sku: string, updateProductDto: UpdateProductDto) {
-    const product = this.productsRepository.update(sku, updateProductDto)
+  async update(sku: string, updateProductDto: UpdateProductDto) {
+    const product = await this.productsRepository.update(sku, updateProductDto)
     if (!product) {
       throw new NotFoundException("Product not found")
     }
+
+    // Si se actualiza la categoría, validar que exista
+    if (updateProductDto.categoryId) {
+      await this.categoriesService.findOne(updateProductDto.categoryId)
+    }
+
     return product
   }
 
