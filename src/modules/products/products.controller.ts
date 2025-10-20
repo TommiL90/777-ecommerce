@@ -37,11 +37,12 @@ export class ProductsController {
           name: "Royal Canin Mini Adult",
           description:
             "Alimento completo para perros adultos de razas pequeñas (hasta 10kg) de 10 meses a 8 años",
-          price: 89.99,
+          price: 89_990,
           stock: 25,
           brand: "Royal Canin",
           categoryId: "alimentos-perros",
           imgUrl: "https://cdn.example.com/royal-canin-mini.jpg",
+          publicId: "products/royal-canin-mini-001",
         },
       },
       ejemplo2: {
@@ -50,8 +51,9 @@ export class ProductsController {
           sku: "SKU-COLLAR-001",
           name: "Collar ajustable nylon",
           description: "Collar ajustable de nylon resistente para perros",
-          price: 15.5,
+          price: 15_500,
           categoryId: "accesorios-perros",
+          publicId: "products/collar-nylon-001",
         },
       },
     },
@@ -141,7 +143,7 @@ export class ProductsController {
       ejemplo1: {
         summary: "Actualizar precio y stock",
         value: {
-          price: 95.99,
+          price: 95_990,
           stock: 30,
         },
       },
@@ -151,8 +153,15 @@ export class ProductsController {
           name: "Royal Canin Mini Adult 3kg",
           description:
             "Alimento completo para perros adultos de razas pequeñas. Nueva presentación 3kg.",
-          price: 95.99,
+          price: 95_990,
           stock: 30,
+        },
+      },
+      ejemplo3: {
+        summary: "Actualizar public_id de imagen",
+        value: {
+          publicId: "products/royal-canin-mini-new-001",
+          imgUrl: "https://cdn.example.com/royal-canin-mini-new.jpg",
         },
       },
     },

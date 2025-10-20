@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto"
 export class Product {
   readonly id: string
   name: string
-  price: number
+  price: number // Int en Prisma - pesos chilenos sin decimales
   brand: string
   description: string
   stock: number

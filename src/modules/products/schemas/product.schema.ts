@@ -27,8 +27,9 @@ export const ProductSchema = z.object({
     ),
   price: z
     .number({ message: "El precio es requerido y debe ser un número" })
+    .int({ message: "El precio debe ser un número entero" })
     .positive({ message: "El precio debe ser positivo" })
-    .describe("Precio del producto en la moneda local. Ejemplo: 120.50"),
+    .describe("Precio del producto en pesos chilenos (sin decimales). Ejemplo: 89990"),
   stock: z
     .number({ message: "El stock debe ser un número" })
     .int({ message: "El stock debe ser un número entero" })

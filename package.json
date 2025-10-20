@@ -1,6 +1,6 @@
 {
   "name": "777-ecommerce",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "API Backend para sistema de e-commerce con NestJS, Prisma y MySQL",
   "author": "777 Team",
   "private": true,
