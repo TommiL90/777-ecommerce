@@ -20,11 +20,11 @@ export const envSchema = z.object({
 
   // Configuración del servidor
   NODE_ENV: z.enum(["dev", "test", "production"]).default("dev"),
-  PORT: z.coerce.number().int().min(1).max(65_535).default(3333),
+  PORT: z.coerce.number().int().min(1).max(65_535).default(3000),
 
   // Configuración de la aplicación
   APP_NAME: z.string().default("777 E-commerce API"),
-  APP_VERSION: z.string().default("1.0.0"),
+  APP_VERSION: z.string().default("1.0.4"),
 })
 
 /**
