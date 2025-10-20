@@ -56,6 +56,13 @@ export const ProductSchema = z.object({
     .describe(
       "URL de la imagen principal del producto. Ejemplo: https://cdn.example.com/product.jpg"
     ),
+  publicId: z
+    .string({ message: "El public_id es requerido y debe ser un string" })
+    .min(1, { message: "El public_id no puede estar vacío" })
+    .max(255, { message: "El public_id no puede exceder 255 caracteres" })
+    .describe(
+      "Identificador público del recurso en servicios externos como Cloudinary. Ejemplo: abc123"
+    ),
   createdAt: z.coerce.date().describe("Fecha y hora de creación del registro en el sistema"),
   updatedAt: z.coerce.date().describe("Fecha y hora de la última actualización del registro"),
 })
@@ -96,6 +103,13 @@ export const CreateProductSchema = ProductSchema.omit({
     .optional()
     .default(0)
     .describe("Cantidad inicial en inventario (opcional, por defecto 0). Ejemplo: 10"),
+  publicId: z
+    .string({ message: "El public_id es requerido y debe ser un string" })
+    .min(1, { message: "El public_id no puede estar vacío" })
+    .max(255, { message: "El public_id no puede exceder 255 caracteres" })
+    .describe(
+      "Identificador público del recurso en servicios externos como Cloudinary. Ejemplo: products/abc123"
+    ),
 })
 
 /**

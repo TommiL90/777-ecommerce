@@ -10,6 +10,7 @@ export class Product {
   sku: string
   categoryId: string
   imgUrl: string | null
+  publicId: string
   createdAt: Date
   updatedAt: Date
 
