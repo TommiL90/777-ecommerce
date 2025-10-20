@@ -9,7 +9,7 @@ export const ProductSchema = z.object({
   id: z.string().uuid().describe("Identificador único UUID del producto generado por el sistema"),
   sku: z
     .string({ message: "El SKU es requerido y debe ser un string" })
-    .min(3, { message: "El SKU debe tener al menos 3 caracteres" })
+    .min(1, { message: "El SKU debe tener al menos 1 carácter" })
     .max(120, { message: "El SKU no puede exceder 120 caracteres" })
     .describe("Código SKU único del producto para identificación e inventario. Ejemplo: SKU048546"),
   name: z
