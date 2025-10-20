@@ -37,7 +37,6 @@ export const ProductSchema = z.object({
     .describe("Cantidad de unidades disponibles en inventario. Ejemplo: 10"),
   brand: z
     .string({ message: "La marca debe ser un string" })
-    .min(3, { message: "La marca debe tener al menos 3 caracteres" })
     .max(120, { message: "La marca no puede exceder 120 caracteres" })
     .nullable()
     .describe("Marca o fabricante del producto (opcional). Ejemplo: Royal Canin, Purina"),
@@ -85,10 +84,9 @@ export const CreateProductSchema = ProductSchema.omit({
   // Convertir campos nullable a optional para inputs con valores por defecto apropiados
   brand: z
     .string({ message: "La marca debe ser un string" })
-    .min(3, { message: "La marca debe tener al menos 3 caracteres" })
     .max(120, { message: "La marca no puede exceder 120 caracteres" })
     .optional()
-    .describe("Marca o fabricante del producto (opcional). Ejemplo: Royal Canin, Purina"),
+    .describe("Marca o fabricante del producto (opcional). Puede ser string vacío. Ejemplo: Royal Canin, Purina"),
   imgUrl: z
     .string()
     .url({ message: "La URL de imagen debe ser válida" })

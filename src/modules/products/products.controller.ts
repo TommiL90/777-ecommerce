@@ -186,16 +186,16 @@ export class ProductsController {
     return this.productsService.update(sku, updateProductDto)
   }
 
-  @Delete(":id")
+  @Delete(":sku")
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: "Eliminar un producto",
-    description: "Elimina permanentemente un producto del catálogo utilizando su ID único",
+    description: "Elimina permanentemente un producto del catálogo utilizando su código SKU único",
   })
   @ApiParam({
-    name: "id",
-    description: "ID único UUID del producto a eliminar",
-    example: "550e8400-e29b-41d4-a716-446655440000",
+    name: "sku",
+    description: "Código SKU único del producto a eliminar",
+    example: "SKU-RC-MINI-001",
     type: String,
   })
   @ApiResponse({
@@ -204,13 +204,13 @@ export class ProductsController {
   })
   @ApiResponse({
     status: 404,
-    description: "Producto no encontrado con el ID proporcionado",
+    description: "Producto no encontrado con el SKU proporcionado",
   })
   @ApiResponse({
     status: 500,
     description: "Error interno del servidor",
   })
-  remove(@Param("id") id: string) {
-    return this.productsService.remove(id)
+  remove(@Param("sku") sku: string) {
+    return this.productsService.remove(sku)
   }
 }
