@@ -8,11 +8,18 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from "@nestjs/common"
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger"
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger"
+import { z } from "zod"
 import { CreateProductDto } from "./dto/create-product.dto"
 import { UpdateProductDto } from "./dto/update-product.dto"
 import { ProductsService } from "./products.service"
+
+// Schema de validación para el query parameter
+const ParentCategorySlugSchema = z.enum(["resto-bar", "sex-shop"], {
+  message: "El slug debe ser 'resto-bar' o 'sex-shop'",
+})
 
 @ApiTags("products")
 @Controller("products")
@@ -94,6 +101,36 @@ export class ProductsController {
   })
   findAll() {
     return this.productsService.findAll()
+  }
+
+  @Get("by-parent-category")
+  @ApiOperation({
+    summary: "Obtener productos por slug de categoría padre",
+    description: "Filtra productos cuya categoría pertenece a una categoría padre específica",
+  })
+  @ApiQuery({
+    name: "slug",
+    description: "Slug de la categoría padre (resto-bar o sex-shop)",
+    example: "resto-bar",
+    required: true,
+    enum: ["resto-bar", "sex-shop"],
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Lista de productos y categorías hijas",
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Slug de categoría padre inválido. Debe ser 'resto-bar' o 'sex-shop'",
+  })
+  @ApiResponse({
+    status: 500,
+    description: "Error interno del servidor",
+  })
+  findByParentCategory(@Query("slug") slug: string) {
+    // Validar el query parameter con Zod
+    const validatedSlug = ParentCategorySlugSchema.parse(slug)
+    return this.productsService.findByParentCategory(validatedSlug)
   }
 
   @Get(":sku")

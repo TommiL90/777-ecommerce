@@ -2,7 +2,10 @@ import { ConflictException, Injectable, NotFoundException } from "@nestjs/common
 import { CategoriesService } from "../categories/categories.service"
 import type { CreateProductDto } from "./dto/create-product.dto"
 import type { UpdateProductDto } from "./dto/update-product.dto"
-import { ProductsRepository } from "./repositories/products.repository"
+import {
+  type ProductsByParentCategoryResponse,
+  ProductsRepository,
+} from "./repositories/products.repository"
 
 @Injectable()
 export class ProductsService {
@@ -48,6 +51,39 @@ export class ProductsService {
     }
 
     return product
+  }
+
+  async findByParentCategory(parentSlug: string): Promise<ProductsByParentCategoryResponse> {
+    const products = await this.productsRepository.findByParentCategorySlug(parentSlug)
+
+    // Extraer categorías únicas de los productos
+    const categories = Array.from(
+      new Map(products.map((p) => [p.category.id, p.category])).values()
+    )
+
+    // Crear respuesta simplificada
+    const simplifiedProducts = products.map((product) => ({
+      id: product.id,
+      sku: product.sku,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      stock: product.stock,
+      imgUrl: product.imgUrl,
+      brand: product.brand,
+      categoryId: product.category.id,
+    }))
+
+    const simplifiedCategories = categories.map((category) => ({
+      id: category.id,
+      name: category.name,
+      slug: category.slug,
+    }))
+
+    return {
+      products: simplifiedProducts,
+      categories: simplifiedCategories,
+    }
   }
 
   remove(sku: string) {
